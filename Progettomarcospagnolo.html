@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indovina lo Steam</title>
+<style>
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #0b0c10, #1f4068, #1b1b2f);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+h2 {
+  color: #c0c0c0; 
+  margin: 0 0 30px;
+  font-size: 28px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); 
+}
+
+#domanda {
+  font-size: 20px;
+  color: #c0c0c0; 
+  background: rgba(255, 255, 255, 0.1); 
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 650px;
+  text-align: center;
+  border: 1px solid #c0c0c0;
+}
+
+button {
+  background-color: #4e4e50; 
+  color: #ffffff;
+  border: 2px solid #c0c0c0; 
+  padding: 15px 30px;
+  margin: 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  background-color: #656567; 
+  box-shadow: 0 0 20px #4e4e50; 
+}
+
+button:focus {
+  outline: none;
+}
+#bottoni{
+  margin-left: 70%;
+}
+#risultato {
+  font-size: 24px;
+  color: #ffffff; 
+  background: #4e4e50; 
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+  animation: fadeIn 1s ease forwards;
+  margin-top: 30px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  body, #domanda {
+    padding: 15px;
+  }
+  h2 {
+    font-size: 22px;
+  }
+  button {
+    padding: 10px 20px;
+  }
+}
+</style>
+</head>
+<body onload="iniziaGioco()">
+  <h2>Indovina lo Steam</h2>
+  <div style="width:10%;
+  margin-bottom: 15px;
+ box-shadow:5px 5px 3px #a3a0a1;
+ background-color:#4e4e50;
+ vertical-align:middle;
+ border:1px solid black;">
+ <font color="white">
+   <ul start="1">
+      <li>Albert Einstein</li>
+      <li>Isaac Newton</li>
+      <li>Bill Gates</li>
+      <li>Leonardo da Vinci</li>
+      <li>Marie Curie</li>
+      <li>Galileo Galilei</li>
+      <li>Ada Lovelace</li>
+      <li>Nikola Tesla</li>
+      <li>Stephen Hawking</li>
+      <li>Carl Friedrich Gauss</li>
+      <li>Marie-Sophie Germain</li>
+      <li>Richard Feynman</li>
+      <li>Émilie du Châtelet</li>
+      <li>Erwin Schrödinger</li>
+      <li>Henrietta Leavitt</li>
+      <li>Paul Dirac</li>
+      <li>Sophie Kowalevski</li>
+      <li>James Clerk Maxwell</li>
+      <li>Dorothy Hodgkin</li>
+      <li>Niels Bohr</li>
+  </ul>
+  </div>
+  <div id="domanda"></div>
+  <div #bottoni>
+    <button onclick="rispostaSi()">Sì</button>
+    <button onclick="rispostaNo()">No</button>
+  </div>
+  <div id="risultato" class="hidden">Il personaggio è: <span id="nomePersonaggio"></span></div>
+<script>
+let personaggi = [
+  { 
+    nome: "Albert Einstein", 
+    domande: [
+      "Ha formulato la teoria della relatività?", 
+      "Era un fisico?", 
+      "Era tedesco?", 
+      "Ha vinto il Premio Nobel?", 
+      "Ha lavorato sulla meccanica quantistica?"
+    ] 
+  },
+  { 
+    nome: "Isaac Newton", 
+    domande: [
+      "Ha formulato la legge di gravitazione universale?", 
+      "Era inglese?", 
+      "Ha lavorato sulla meccanica classica?", 
+      "Ha inventato il calcolo infinitesimale?", 
+      "Ha avuto una disputa con Leibniz?"
+    ] 
+  },
+  { 
+    nome: "Bill Gates", 
+    domande: [
+      "Ha fondato Microsoft?", 
+      "È stato il CEO di Microsoft?", 
+      "È uno sviluppatore software?", 
+      "Ha lavorato sulla filantropia?", 
+      "Ha avuto una disputa legale con Apple?"
+    ] 
+  }, 
+  { 
+    nome: "Leonardo da Vinci", 
+    domande: [
+      "Era un pittore?", 
+      "Ha progettato macchine volanti?", 
+      "Ha dipinto La Gioconda?", 
+      "Ha studiato anatomia umana?", 
+      "Ha vissuto nel Rinascimento italiano?"
+    ] 
+  },
+  { 
+    nome: "Marie Curie", 
+    domande: [
+      "Ha scoperto il radio?", 
+      "È stata la prima donna a vincere un Premio Nobel?", 
+      "Ha studiato la radioattività?", 
+      "Ha lavorato con il polonio?", 
+      "Ha fatto importanti ricerche sulla radiazione?"
+    ] 
+  },
+  {
+  nome: "Galileo Galilei",
+  domande: [
+    "Ha migliorato il telescopio per osservare l'universo?",
+    "È stato condannato dall'Inquisizione?",
+    "Ha scoperto le lune di Giove?",
+    "È considerato il padre della scienza moderna?",
+    "Ha sostenuto il modello eliocentrico del sistema solare?"
+  ]
+},
+{
+  nome: "Ada Lovelace",
+  domande: [
+    "È considerata la prima programmatrice della storia?",
+    "Ha lavorato con Charles Babbage?",
+    "Ha scritto algoritmi per l'Analytical Engine?",
+    "È stata una matematica inglese?",
+    "Ha previsto l'uso dei computer oltre il calcolo matematico?"
+  ]
+},
+{
+  nome: "Nikola Tesla",
+  domande: [
+    "Ha inventato la corrente alternata?",
+    "Ha contribuito allo sviluppo della radio?",
+    "Ha ideato il campo magnetico rotante?",
+    "È nato in quello che è oggi la Croazia?",
+    "Ha avuto una famosa rivalità con Edison?"
+  ]
+  },
+  {
+  nome: "Stephen Hawking",
+  domande: [
+    "Ha scritto 'Una breve storia del tempo'?",
+    "Ha lavorato sulla teoria dei buchi neri?",
+    "Era un fisico teorico e cosmologo?",
+    "Ha sofferto di sclerosi laterale amiotrofica (SLA)?",
+    "Ha proposto la radiazione di Hawking?"
+  ]
+},
+{
+  nome: "Carl Friedrich Gauss",
+  domande: [
+    "È noto come il 'principe dei matematici'?",
+    "Ha contribuito significativamente alla teoria dei numeri?",
+    "Ha inventato il metodo dei minimi quadrati?",
+    "Ha lavorato sul magnetismo?",
+    "Ha formulato il teorema di Gauss?"
+  ]
+},
+{
+  nome: "Marie-Sophie Germain",
+  domande: [
+    "Ha lavorato in anonimato per superare i pregiudizi contro le donne scienziate?",
+    "Ha fatto importanti contributi alla teoria dei numeri e all'elasticità?",
+    "È stata una matematica francese dell'epoca napoleonica?",
+    "Il suo lavoro è stato fondamentale per la dimostrazione del ultimo teorema di Fermat da parte di Andrew Wiles?",
+    "Ha vinto un premio dall'Accademia delle Scienze di Parigi per il suo lavoro sull'elasticità?"
+  ]
+},
+{
+  nome: "Richard Feynman",
+  domande: [
+    "Ha vinto il Premio Nobel per la Fisica per i suoi contributi all'elettrodinamica quantistica?",
+    "È famoso per le sue 'Lezioni di fisica'?",
+    "Ha lavorato sul progetto Manhattan?",
+    "Ha introdotto i diagrammi che portano il suo nome?",
+    "Ha contribuito alla fisica delle particelle e alla meccanica quantistica?"
+  ]
+},
+{
+  nome: "Émilie du Châtelet",
+  domande: [
+    "Ha tradotto i 'Principia Mathematica' di Newton in francese?",
+    "Era una matematica e fisica francese del XVIII secolo?",
+    "Ha avuto una relazione con Voltaire?",
+    "Ha contribuito alla comprensione della conservazione dell'energia?",
+    "Ha scritto un importante commentario su 'Principia Mathematica'?"
+  ]
+},
+{
+  nome: "Erwin Schrödinger",
+  domande: [
+    "Ha proposto l'equazione che porta il suo nome in meccanica quantistica?",
+    "Ha vinto il Premio Nobel per la Fisica?",
+    "È noto per il suo esperimento mentale 'Il gatto di Schrödinger'?",
+    "Era un fisico austriaco?",
+    "Ha contribuito al modello atomico?"
+  ]
+},
+{
+  nome: "Henrietta Leavitt",
+  domande: [
+    "Ha scoperto la relazione periodicità-luminosità delle cefeidi?",
+    "Era un'astronoma americana?",
+    "Il suo lavoro ha permesso di misurare la distanza delle stelle?",
+    "Ha lavorato all'Harvard College Observatory?",
+    "Le sue scoperte sono state fondamentali per la legge di Hubble?"
+  ]
+},
+{
+  nome: "Paul Dirac",
+  domande: [
+    "Ha contribuito alla formulazione della meccanica quantistica?",
+    "Ha previsto l'esistenza dell'antimateria?",
+    "È stato co-vincitore del Premio Nobel per la Fisica con Schrödinger?",
+    "Ha formulato l'equazione di Dirac?",
+    "Era noto per il suo lavoro sull'elettrodinamica quantistica?"
+  ]
+},
+{
+  nome: "Sophie Kowalevski",
+  domande: [
+    "È stata la prima donna a ottenere un dottorato in matematica?",
+    "Ha lavorato sulle equazioni differenziali e sulla teoria dei rotori?",
+    "Era una matematica russa?",
+    "Ha ottenuto una cattedra universitaria in Svezia?",
+    "Ha vinto il premio Bordin dell'Accademia Francese delle Scienze?"
+  ]
+},
+{
+  nome: "James Clerk Maxwell",
+  domande: [
+    "Ha formulato le equazioni fondamentali dell'elettromagnetismo?",
+    "È noto per la sua teoria del colore?",
+    "Ha predetto l'esistenza delle onde elettromagnetiche?",
+    "Era uno scienziato scozzese?",
+    "Ha contribuito alla termodinamica e alla meccanica statistica?"
+  ]
+},
+{
+  nome: "Dorothy Hodgkin",
+  domande: [
+    "Ha vinto il Premio Nobel per la Chimica per i suoi lavori sulla struttura delle biomolecole?",
+    "Ha determinato la struttura della penicillina?",
+    "Era una chimica britannica?",
+    "Ha utilizzato la cristallografia a raggi X?",
+    "Ha determinato la struttura della vitamina B12?"
+  ]
+},
+{
+  nome: "Niels Bohr",
+  domande: [
+    "Ha proposto il modello atomico che porta il suo nome?",
+    "Ha vinto il Premio Nobel per la Fisica?",
+    "Ha contribuito alla comprensione della struttura atomica e alla meccanica quantistica?",
+    "Era danese?",
+    "Ha fondato l'Istituto di Fisica Teorica a Copenaghen?"
+  ]
+  }
+];
+
+let personaggioCorrente = 0;
+let indiceDomanda = 0;
+
+function iniziaGioco() {
+  if (personaggi.length > 0) {
+    faiDomanda();
+  } else {
+    document.getElementById("domanda").textContent = "Nessun personaggio configurato.";
+  }
+}
+
+function faiDomanda() {
+  nomePersonaggio.textContent = ""
+  if (indiceDomanda < personaggi[personaggioCorrente].domande.length) {
+    document.getElementById("domanda").textContent = personaggi[personaggioCorrente].domande[indiceDomanda];
+  } else {
+    indovinaPersonaggio();
+  }
+}
+
+function rispostaSi() {
+  indiceDomanda++;
+  faiDomanda();
+}
+
+function rispostaNo() {
+  personaggioCorrente++;
+  indiceDomanda = 0;
+  if (personaggioCorrente >= personaggi.length) {
+    document.getElementById("domanda").textContent = "Non sono riuscito a indovinare il tuo personaggio.";
+  } else {
+    faiDomanda();
+  }
+}
+
+function indovinaPersonaggio() {
+  let risultato = document.getElementById("risultato");
+  let nomePersonaggio = document.getElementById("nomePersonaggio");
+  nomePersonaggio.textContent = personaggi[personaggioCorrente].nome;
+  risultato.classList.remove("hidden");
+}
+</script>
+</body>
+</html>
